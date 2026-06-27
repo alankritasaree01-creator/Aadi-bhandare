@@ -34,7 +34,8 @@ const revealObserver = new IntersectionObserver(entries => {
 function splitLines(){
   document.querySelectorAll('.line-reveal:not([data-split])').forEach(el => {
     el.setAttribute('data-split','');
-    el.innerHTML = el.innerHTML.replace(/(<em>.*?<\/em>|[^\s<]+)/g, m => `<span class="w">${m}</span> `);
+    // each word gets a clip-mask wrapper (.w) with an inner <i> that rises into view
+    el.innerHTML = el.innerHTML.replace(/(<em>.*?<\/em>|[^\s<]+)/g, m => `<span class="w"><i>${m}</i></span> `);
   });
 }
 function observeReveals(){
