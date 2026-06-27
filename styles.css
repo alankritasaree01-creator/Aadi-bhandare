@@ -92,14 +92,14 @@ body.home-top nav:not(.scrolled) .burger span{background:#fff}
 /* ---------- Particle "formation" dust on section reveal ---------- */
 section{position:relative}
 .rv-dust{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:4}
-.rv-dust i{position:absolute;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;
-  background:radial-gradient(circle,var(--gold-light) 0%,rgba(216,188,133,.55) 40%,transparent 72%);
-  box-shadow:0 0 7px rgba(216,188,133,.7);opacity:0;will-change:transform,opacity;
-  animation:rvDust 1.5s var(--ease-out) both}
+.rv-dust i{position:absolute;width:2px;height:2px;margin:-1px 0 0 -1px;border-radius:50%;
+  background:radial-gradient(circle,var(--gold-light) 0%,rgba(216,188,133,.4) 45%,transparent 72%);
+  box-shadow:0 0 3px rgba(216,188,133,.45);opacity:0;will-change:transform,opacity;
+  animation:rvDust 1.6s var(--ease-out) both}
 @keyframes rvDust{
-  0%{opacity:0;transform:translate(var(--dx,0),var(--dy,0)) scale(.2)}
-  28%{opacity:1}
-  70%{opacity:.85}
+  0%{opacity:0;transform:translate(var(--dx,0),var(--dy,0)) scale(.3)}
+  35%{opacity:.4}
+  70%{opacity:.3}
   100%{opacity:0;transform:translate(0,0) scale(1)}
 }
 @media (prefers-reduced-motion:reduce){.rv-dust{display:none!important}}

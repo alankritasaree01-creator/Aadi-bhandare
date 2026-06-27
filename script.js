@@ -57,7 +57,7 @@ function spawnDust(host){
   host.dataset.dusted = '1';
   const layer = document.createElement('div');
   layer.className = 'rv-dust';
-  const n = window.innerWidth < 760 ? 16 : 26;
+  const n = window.innerWidth < 760 ? 6 : 9;
   for (let i = 0; i < n; i++){
     const p = document.createElement('i');
     p.style.left = (Math.random() * 100).toFixed(2) + '%';
