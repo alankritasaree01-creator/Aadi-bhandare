@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  document.documentElement.className = 'js';
+  try { if (sessionStorage.getItem('alankritaCurtainSeen') === '1') document.documentElement.className += ' curtain-seen'; } catch (e) {}
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2C3124">
+<title>Alankrita Saree — Handwoven Luxury, Pune</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="preload" as="image" href="https://i.ibb.co/XfvWkSz9/Whats-App-Image-2026-06-16-at-12-13-04-PM.jpg">
+<link rel="preload" as="image" href="https://i.ibb.co/WrxczYL/Whats-App-Image-2026-06-16-at-12-13-03-PM-1.jpg">
+<link rel="preload" as="image" href="https://i.ibb.co/1G1JFMgR/Whats-App-Image-2026-06-16-at-12-13-03-PM.jpg">
+<link rel="preload" as="image" href="https://i.ibb.co/Z0zwfvj/Whats-App-Image-2026-06-10-at-6-40-23-PM-1.jpg">
+
+<style>
+  /* ===== Curtain reveal (once per visit / session) ===== */
+  html.js body.curtain-on { overflow: hidden; }
+  html.js body.curtain-on .img-hero-content,
+  html.js body.curtain-on .scroll-cue { opacity: 0 !important; }
+  .img-hero-content, .scroll-cue { transition: opacity 1s ease; }
+
+  .curtain { position: fixed; inset: 0; height: 100%; z-index: 9999; background: #2C3124; touch-action: none; user-select: none; -webkit-user-select: none; }
+  html:not(.js) .curtain { display: none; }
+
+  html.curtain-seen .curtain { display: none !important; }
+  html.curtain-seen body.curtain-on { overflow: auto; }
+  html.curtain-seen body.curtain-on .img-hero-content,
+  html.curtain-seen body.curtain-on .scroll-cue { opacity: 1 !important; }
+
+  .curtain.lift { opacity: 0; transition: opacity .55s ease; }
+  .curtain-panel { position: absolute; left: 0; width: 100%; height: 50.6%; background: linear-gradient(180deg, #2b3122 0%, #181c11 100%); transition: transform .8s cubic-bezier(.76,0,.24,1); will-change: transform; }
+  .curtain-top { top: 0; border-bottom: 1px solid rgba(201,160,92,.35); box-shadow: 0 2px 34px rgba(201,160,92,.14); }
+  .curtain-bot { bottom: 0; border-top: 1px solid rgba(201,160,92,.35); box-shadow: 0 -2px 34px rgba(201,160,92,.14); }
+  .curtain.dragging .curtain-panel { transition: none; }
+  .curtain-wordmark { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .25rem; text-align: center; pointer-events: none; }
+  .cw-name { font-family: 'Italiana','Cormorant Garamond',serif; font-size: clamp(2.7rem, 11vw, 7rem); line-height: .95; letter-spacing: .12em; text-indent: .12em; text-transform: uppercase; color: var(--gold, #C9A05C); }
+  .cw-sub { font-family: 'Cormorant Garamond',serif; font-style: italic; font-size: clamp(1.3rem, 5vw, 2.6rem); letter-spacing: .2em; text-indent: .2em; color: var(--ivory, #F3ECDD); opacity: .92; }
+  .curtain-hint { position: absolute; left: 0; right: 0; bottom: 7%; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: .5rem; transition: opacity .4s ease; pointer-events: none; }
+  .curtain-hint span { font-family: 'Karla',sans-serif; font-size: .62rem; letter-spacing: .34em; text-transform: uppercase; color: rgba(243,236,221,.72); }
+  .cw-chev { width: 22px; height: 22px; fill: none; stroke: var(--gold, #C9A05C); stroke-width: 1.4; }
+  .cw-chev.up { animation: cwBobUp 1.7s ease-in-out infinite; }
+  .cw-chev.down { animation: cwBobDown 1.7s ease-in-out infinite; }
+  .curtain.dragging .curtain-hint { opacity: 0; }
+  .curtain:focus { outline: none; }
+  @keyframes cwBobUp { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-7px); } }
+  @keyframes cwBobDown { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(7px); } }
+
+  /* ===== Hero image carousel ===== */
+  #heroImg { display: none !important; }
+  .hero-cara { position: absolute; inset: 0; overflow: hidden; }
+  .hero-cara-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; opacity: 0; transition: opacity 1.4s ease; will-change: opacity; }
+  .hero-cara-img.is-active { opacity: 1; }
+
+  /* ===== Watch & Buy — horizontal reels carousel (PC + phone) ===== */
+  .wb-rail{display:flex;gap:1.4rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:.4rem 0 1.2rem;scrollbar-width:none}
+  .wb-rail::-webkit-scrollbar{display:none}
+  .wb-frame{flex:0 0 clamp(326px,86vw,358px);scroll-snap-align:start;position:relative;padding:5px;border-radius:20px;background:linear-gradient(135deg,#feda75 0%,#fa7e1e 20%,#d62976 48%,#962fbf 72%,#4f5bd5 100%);box-shadow:0 22px 50px -26px rgba(60,20,80,.5)}
+  .wb-stage{position:relative;display:flex;min-height:540px;border-radius:15px;overflow:hidden;background:#15130f}
+  .wb-stage::after{content:'';position:absolute;top:50%;left:50%;width:40px;height:40px;margin:-20px 0 0 -20px;z-index:0;border-radius:50%;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;animation:wbSpin .9s linear infinite}
+  @keyframes wbSpin{to{transform:rotate(360deg)}}
+  .wb-stage .instagram-media{position:relative;z-index:1;width:100% !important;min-width:0 !important;max-width:none !important;margin:0 !important;border-radius:13px !important}
+  .wb-stage blockquote.instagram-media{background:transparent !important;border:0 !important;box-shadow:none !important}
+  .wb-stage blockquote.instagram-media a{font-size:0 !important;color:transparent !important;pointer-events:none}
+  .wb-stage iframe.instagram-media{animation:wbIn .55s ease both}
+  @keyframes wbIn{from{opacity:0}to{opacity:1}}
+  .wb-watch{position:absolute;inset:0;z-index:2;display:none;flex-direction:column;align-items:center;justify-content:center;gap:.9rem;text-decoration:none}
+  .wb-frame.wb-fallback .wb-stage::after{display:none}
+  .wb-frame.wb-fallback .wb-watch{display:flex}
+  .wb-watch .pl{width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.08);display:grid;place-content:center;transition:.3s}
+  .wb-watch:hover .pl{background:#fff}
+  .wb-watch .pl svg{width:20px;height:20px;fill:#fff;transition:.3s}
+  .wb-watch:hover .pl svg{fill:#d62976}
+  .wb-hint{text-align:center;font-family:var(--body,'Karla',sans-serif);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold,#C9A05C);margin-top:.6rem}
+
+  /* ===== Watch & Buy — navigation arrows ===== */
+  .wb-carousel{position:relative}
+  .wb-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:6;width:48px;height:48px;border-radius:50%;border:1px solid rgba(201,160,92,.7);background:rgba(44,49,36,.6);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);display:grid;place-content:center;cursor:pointer;color:var(--gold,#C9A05C);transition:background .3s,color .3s,opacity .3s,box-shadow .3s}
+  .wb-arrow:hover{background:var(--gold,#C9A05C);color:#2C3124;box-shadow:0 10px 26px -10px rgba(201,160,92,.7)}
+  .wb-arrow:focus-visible{outline:2px solid var(--gold,#C9A05C);outline-offset:3px}
+  .wb-arrow svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .wb-prev{left:6px}
+  .wb-next{right:6px}
+  .wb-arrow[disabled]{opacity:0;pointer-events:none}
+  @media (max-width:768px){.wb-arrow{display:none}}
+</style>
+</head>
+<body class="is-home home-top curtain-on">
+
+<!-- ===== Curtain reveal ===== -->
+<div class="curtain" id="curtain" role="button" tabindex="0" aria-label="Swipe, scroll or tap to part the curtains and enter">
+  <div class="curtain-panel curtain-top"></div>
+  <div class="curtain-panel curtain-bot"></div>
+  <div class="curtain-wordmark">
+    <span class="cw-name">Alankrita</span>
+    <span class="cw-sub">Saree</span>
+  </div>
+  <div class="curtain-hint" id="curtainHint">
+    <svg viewBox="0 0 24 24" class="cw-chev up"><polyline points="6 15 12 9 18 15"/></svg>
+    <span>Swipe or scroll to enter</span>
+    <svg viewBox="0 0 24 24" class="cw-chev down"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</div>
+
+<nav id="nav">
+  <a class="logo" href="index.html">Alankrita<span>saree · pune</span></a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="collection.html">Collection</a></li>
+    <li><a href="story.html">Our Story</a></li>
+    <li><a href="craft.html">The Craft</a></li>
+    <li><a href="appointment.html">Book Appointment</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="socials.html">Our Socials</a></li>
+  </ul>
+</nav>
+
+<main class="page active" id="page-home">
+<header class="img-hero" style="padding:0">
+    <div class="hero-cara" id="heroCara" aria-hidden="true">
+      <picture>
+        <source media="(max-width: 768px)" srcset="https://i.ibb.co/gYfg4WJ/Whats-App-Image-2026-06-18-at-11-20-02-PM-2.jpg">
+        <img class="hero-cara-img is-active" src="https://i.ibb.co/XfvWkSz9/Whats-App-Image-2026-06-16-at-12-13-04-PM.jpg" alt="">
+      </picture>
+      <picture>
+        <source media="(max-width: 768px)" srcset="https://i.ibb.co/Zzs0YGCz/Whats-App-Image-2026-06-18-at-11-20-02-PM-1.jpg">
+        <img class="hero-cara-img" src="https://i.ibb.co/WrxczYL/Whats-App-Image-2026-06-16-at-12-13-03-PM-1.jpg" alt="">
+      </picture>
+      <picture>
+        <source media="(max-width: 768px)" srcset="https://i.ibb.co/5XKd50Jj/Whats-App-Image-2026-06-18-at-11-20-02-PM.jpg">
+        <img class="hero-cara-img" src="https://i.ibb.co/1G1JFMgR/Whats-App-Image-2026-06-16-at-12-13-03-PM.jpg" alt="">
+      </picture>
+      <picture>
+        <source media="(max-width: 768px)" srcset="https://i.ibb.co/jk4NgYvc/Whats-App-Image-2026-06-18-at-11-20-03-PM.jpg">
+        <img class="hero-cara-img" src="https://i.ibb.co/Z0zwfvj/Whats-App-Image-2026-06-10-at-6-40-23-PM-1.jpg" alt="">
+      </picture>
+    </div>
+    <div class="img-zoom" id="heroImg" data-zoom></div>
+    <div class="veil"></div>
+    <div class="img-hero-content">
+      <p class="hero-eyebrow">Handwoven in tradition · Draped in grace</p>
+      <h1>Alankrita<br><em>Saree</em></h1>
+      <p class="hero-sub">Six yards of heritage, woven for the woman who carries Pune in her heart.</p>
+      <div class="hero-cta">
+        <a class="btn solid" href="collection.html">Explore the Collection</a>
+        <a class="btn" href="appointment.html">Book a Private Viewing</a>
+      </div>
+    </div>
+    <div class="scroll-cue">Scroll to explore</div>
+  </header>
+
+  <div class="marquee" aria-hidden="true"><div class="marquee-inner">
+    <span>Paithani</span><span>✦</span><span>Kanjeevaram</span><span>✦</span><span>Banarasi</span><span>✦</span><span>Chanderi</span><span>✦</span><span>Tussar Silk</span><span>✦</span><span>Organza</span><span>✦</span>
+    <span>Paithani</span><span>✦</span><span>Kanjeevaram</span><span>✦</span><span>Banarasi</span><span>✦</span><span>Chanderi</span><span>✦</span><span>Tussar Silk</span><span>✦</span><span>Organza</span><span>✦</span>
+  </div></div>
+
+  <section>
+    <div class="intro-grid">
+      <div class="reveal">
+        <p class="eyebrow">The House of Alankrita</p>
+        <h2>Where every thread <em>remembers</em> its weaver</h2>
+        <p class="lede">From our atelier in Mayur Colony, Pune, we curate handwoven sarees sourced directly from master weavers across India — each drape an heirloom in waiting.</p>
+        <div style="margin-top:2.4rem"><a class="btn dark" href="story.html">Read Our Story</a></div>
+      </div>
+      <div class="parallax-frame silk-panel reveal d1">
+        <div class="saree-visual parallax-zoom" data-zoom>
+          <div class="body" style="background:linear-gradient(165deg,#7C3B3B,#5E2828 55%,#4A1F1F)"></div>
+          <div class="pleats"></div><div class="buti"></div><div class="sheen"></div>
+          <div class="border" style="background:linear-gradient(180deg,#B9914F,#9A7438)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="feature-row">
+      <div class="feature reveal"><h3>Loom to Drape</h3><p>No middlemen. Every saree travels from the weaver's loom straight to our atelier, carrying its provenance with it.</p></div>
+      <div class="feature reveal d1"><h3>Curated, Not Stocked</h3><p>Small, seasonal edits chosen by hand — silks, zaris, and weaves that earn their place on our shelves.</p></div>
+      <div class="feature reveal d2"><h3>Draped For You</h3><p>Private appointments at our Pune atelier, where you try, drape, and decide at your own unhurried pace.</p></div>
+    </div>
+  </section>
+
+  <div class="zari"></div>
+
+  <section style="background:var(--ivory-soft)">
+    <div style="text-align:center;max-width:760px;margin:0 auto" class="reveal blur">
+      <p class="eyebrow">From Our Patrons</p>
+      <p style="font-family:var(--serif);font-style:italic;font-size:clamp(1.3rem,2.6vw,1.8rem);line-height:1.6;color:var(--olive-deep)">
+        “I came for one Paithani and left with three. The drape, the zari, the way they let you take your time — Alankrita feels less like a store and more like a family heirloom chest.”
+      </p>
+      <p style="margin-top:1.6rem;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)">— A patron from Kothrud, Pune</p>
+      <div style="margin-top:2.8rem"><a class="btn dark" href="appointment.html">Book Your Appointment</a></div>
+    </div>
+  </section>
+
+  <div class="zari"></div>
+
+  <!-- Featured weaves teaser -->
+  <section>
+    <div style="text-align:center;max-width:680px;margin:0 auto 3.5rem">
+      <p class="eyebrow reveal">A glimpse within</p>
+      <h2 class="reveal d1">Weaves worth <em>travelling</em> for</h2>
+      <p class="lede reveal d2" style="margin-left:auto;margin-right:auto">From regal Paithanis to feather-light organzas — here's a taste of what waits in our collection.</p>
+    </div>
+    <div class="story-gallery">
+      <div class="tile reveal zoom parallax-frame">
+        <div class="saree-visual"><div class="body" style="background:linear-gradient(165deg,#7C3B3B,#5E2828 55%,#4A1F1F)"></div><div class="pleats"></div><div class="buti"></div><div class="sheen"></div><div class="border" style="background:linear-gradient(180deg,#C9A05C,#9A7438)"></div></div>
+        <span class="cap">Mor Bangdi Paithani</span>
+      </div>
+      <div class="tile reveal zoom d1 parallax-frame">
+        <div class="saree-visual"><div class="body" style="background:linear-gradient(165deg,#8A3A55,#6B2740 55%,#4E1B2E)"></div><div class="pleats"></div><div class="buti"></div><div class="sheen"></div><div class="border" style="background:linear-gradient(180deg,#C9A05C,#A87E3F)"></div></div>
+        <span class="cap">Kanjeevaram Kalyani</span>
+      </div>
+      <div class="tile reveal zoom d2 parallax-frame">
+        <div class="saree-visual"><div class="body" style="background:linear-gradient(165deg,#B7A6B8,#988199 55%,#7B6680)"></div><div class="pleats"></div><div class="buti"></div><div class="sheen"></div><div class="border" style="background:linear-gradient(180deg,#D8BC85,#B9914F)"></div></div>
+        <span class="cap">Organza Megha</span>
+      </div>
+      <div class="tile reveal zoom d3 parallax-frame">
+        <div class="saree-visual"><div class="body" style="background:linear-gradient(165deg,#A87E4B,#8C6437 55%,#6E4C26)"></div><div class="pleats"></div><div class="buti"></div><div class="sheen"></div><div class="border" style="background:linear-gradient(180deg,#4A3A1E,#352A14)"></div></div>
+        <span class="cap">Tussar Vanya</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:3.5rem" class="reveal"><a class="btn dark" href="collection.html">View the Full Collection</a></div>
+  </section>
+
+  <div class="zari"></div>
+
+  <!-- ===== Watch & Buy — horizontal reels carousel ===== -->
+  <section>
+    <div style="text-align:center;max-width:680px;margin:0 auto 3rem">
+      <p class="eyebrow reveal">From our Instagram</p>
+      <h2 class="reveal d1">Watch &amp; <em>Buy</em></h2>
+      <p class="lede reveal d2" style="margin-left:auto;margin-right:auto">See our weaves come alive in motion — then tap through to make one yours.</p>
+    </div>
+    <div class="wb-carousel">
+      <button class="wb-arrow wb-prev" id="wbPrev" type="button" aria-label="Previous reels">
+        <svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg>
+      </button>
+      <div class="wb-rail" id="wbRail">
+        <div class="wb-frame"><div class="wb-stage">
+          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DSzB2kDjAs4/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DSzB2kDjAs4/" target="_blank" rel="noopener">View this reel on Instagram</a></blockquote>
+          <a class="wb-watch" href="https://www.instagram.com/reel/DSzB2kDjAs4/" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="tx">Watch on Instagram</span></a>
+        </div></div>
+        <div class="wb-frame"><div class="wb-stage">
+          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DVNdW_QDKlZ/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DVNdW_QDKlZ/" target="_blank" rel="noopener">View this reel on Instagram</a></blockquote>
+          <a class="wb-watch" href="https://www.instagram.com/reel/DVNdW_QDKlZ/" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="tx">Watch on Instagram</span></a>
+        </div></div>
+        <div class="wb-frame"><div class="wb-stage">
+          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DXUJn_aIo60/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DXUJn_aIo60/" target="_blank" rel="noopener">View this reel on Instagram</a></blockquote>
+          <a class="wb-watch" href="https://www.instagram.com/reel/DXUJn_aIo60/" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="tx">Watch on Instagram</span></a>
+        </div></div>
+        <div class="wb-frame"><div class="wb-stage">
+          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DZmM7Shgr1K/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DZmM7Shgr1K/" target="_blank" rel="noopener">View this reel on Instagram</a></blockquote>
+          <a class="wb-watch" href="https://www.instagram.com/reel/DZmM7Shgr1K/" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="tx">Watch on Instagram</span></a>
+        </div></div>
+        <div class="wb-frame"><div class="wb-stage">
+          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DTVPKF1DEVR/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DTVPKF1DEVR/" target="_blank" rel="noopener">View this reel on Instagram</a></blockquote>
+          <a class="wb-watch" href="https://www.instagram.com/reel/DTVPKF1DEVR/" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="tx">Watch on Instagram</span></a>
+        </div></div>
+        <div class="wb-frame"><div class="wb-stage">
+          <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DPylJg7EuQi/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DPylJg7EuQi/" target="_blank" rel="noopener">View this reel on Instagram</a></blockquote>
+          <a class="wb-watch" href="https://www.instagram.com/reel/DPylJg7EuQi/" target="_blank" rel="noopener"><span class="pl"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></span><span class="tx">Watch on Instagram</span></a>
+        </div></div>
+      </div>
+      <button class="wb-arrow wb-next" id="wbNext" type="button" aria-label="Next reels">
+        <svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"/></svg>
+      </button>
+    </div>
+    <p class="wb-hint">‹ swipe / scroll to explore ›</p>
+  </section>
+
+  <div class="zari"></div>
+
+  <!-- Invitation strip on home too -->
+  <section class="invite">
+    <div class="invite-inner reveal zoom">
+      <p class="sparkle">✨ Alankrita — Six Yards of Heritage. A Lifetime of Grace ✨</p>
+      <div class="rule"></div>
+      <p>You are cordially invited to visit our boutique and witness our exclusive range of sarees that blends heritage with elegance. We await the chance to delight you with our artisanal treasures!</p>
+      <div style="margin-top:2.4rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a class="btn solid" href="appointment.html">Book an Appointment</a>
+        <a class="btn" href="https://wa.me/918412845177?text=Hello%20Alankrita%20Saree!%20I'd%20love%20to%20visit%20your%20boutique." target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-logo">Alankrita</div>
+      <p style="font-family:var(--serif);font-style:italic;max-width:32ch">Handwoven sarees, curated with love in Pune — from the loom, for the legacy.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="index.html">Home</a>
+      <a href="collection.html">Collection</a>
+      <a href="story.html">Our Story</a>
+      <a href="craft.html">The Craft</a>
+    </div>
+    <div>
+      <h4>Visit</h4>
+      <a href="appointment.html">Book Appointment</a>
+      <a href="contact.html">Contact</a>
+      <a href="socials.html">Our Socials</a>
+      <a href="https://www.instagram.com/alankritasaree?igsh=ejkxY3gwem9jM3Mz" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/918412845177" target="_blank" rel="noopener">WhatsApp · +91 84128 45177</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Alankrita Saree, Pune. All rights reserved.</span>
+    <span>4, Mayur Colony, Desai Bandhu Ambewale Building, 5th Floor</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/918412845177?text=Hello%20Alankrita%20Saree!" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-2.9-1.3-4.8-4.2-5-4.4-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.8.8 1.9.1.1.1.3 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l.8-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg>
+</a>
+
+<script src="script.js"></script>
+
+<!-- ===== Curtain reveal logic (once per session) ===== -->
+<script>
+(function () {
+  var curtain = document.getElementById('curtain');
+  if (!curtain) return;
+
+  var topP = curtain.querySelector('.curtain-top');
+  var botP = curtain.querySelector('.curtain-bot');
+  var hint = document.getElementById('curtainHint');
+  function revealSite() { document.body.classList.remove('curtain-on'); }
+
+  var SEEN_KEY = 'alankritaCurtainSeen', seenThisSession = false;
+  try { seenThisSession = sessionStorage.getItem(SEEN_KEY) === '1'; } catch (e) {}
+
+  if (seenThisSession) { revealSite(); if (curtain.parentNode) curtain.remove(); return; }
+
+  /* First load of this visit — remember it for the rest of the session. */
+  try { sessionStorage.setItem(SEEN_KEY, '1'); } catch (e) {}
+
+  try { window.scrollTo(0, 0); } catch (e) {}
+
+  var dragging = false, startY = 0, delta = 0, opened = false;
+  function panelH() { return curtain.offsetHeight / 2; }
+
+  function apply(d) {
+    var ph = panelH(), dd = Math.max(0, Math.min(d, ph));
+    topP.style.transform = 'translateY(' + (-dd) + 'px)';
+    botP.style.transform = 'translateY(' + dd + 'px)';
+    if (hint) hint.style.opacity = String(Math.max(1 - (dd / ph) * 2.2, 0));
+  }
+
+  function openCurtain() {
+    if (opened) return;
+    opened = true;
+    curtain.classList.remove('dragging');
+    topP.style.transform = 'translateY(-101%)';
+    botP.style.transform = 'translateY(101%)';
+    if (hint) hint.style.opacity = '0';
+    curtain.style.pointerEvents = 'none';
+    setTimeout(function () { curtain.classList.add('lift'); revealSite(); }, 680);
+    setTimeout(function () { if (curtain.parentNode) curtain.remove(); }, 1260);
+  }
+
+  function resetCurtain() {
+    curtain.classList.remove('dragging');
+    topP.style.transform = '';
+    botP.style.transform = '';
+    if (hint) hint.style.opacity = '';
+    delta = 0;
+  }
+
+  function pointY(e) { return (e.touches && e.touches[0]) ? e.touches[0].clientY : e.clientY; }
+
+  function onDown(e) { if (opened) return; dragging = true; startY = pointY(e); delta = 0; curtain.classList.add('dragging'); }
+  function onMove(e) { if (!dragging || opened) return; delta = Math.abs(pointY(e) - startY); apply(delta); if (e.cancelable) e.preventDefault(); }
+  function onUp()    { if (!dragging || opened) return; dragging = false; if (delta < 8 || delta > panelH() * 0.30) openCurtain(); else resetCurtain(); }
+
+  function onWheel(e) {
+    if (opened) return;
+    curtain.classList.add('dragging');
+    delta = Math.max(0, delta + e.deltaY);
+    apply(delta);
+    if (e.cancelable) e.preventDefault();
+    if (delta > panelH() * 0.45) openCurtain();
+  }
+
+  curtain.addEventListener('mousedown', onDown);
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onUp);
+  curtain.addEventListener('touchstart', onDown, { passive: true });
+  window.addEventListener('touchmove', onMove, { passive: false });
+  window.addEventListener('touchend', onUp);
+  window.addEventListener('wheel', onWheel, { passive: false });
+
+  curtain.addEventListener('keydown', function (e) {
+    if (['Enter', ' ', 'Spacebar', 'ArrowDown', 'ArrowUp'].indexOf(e.key) > -1) { e.preventDefault(); openCurtain(); }
+  });
+  try { curtain.focus({ preventScroll: true }); } catch (e) {}
+})();
+
+// ===== Hero image carousel (crossfade) =====
+(function () {
+  var imgs = document.querySelectorAll('#heroCara .hero-cara-img');
+  if (imgs.length < 2) return;
+  var i = 0;
+  setInterval(function () {
+    imgs[i].classList.remove('is-active');
+    i = (i + 1) % imgs.length;
+    imgs[i].classList.add('is-active');
+  }, 5000);
+})();
+
+// ===== Watch & Buy — arrow navigation =====
+(function () {
+  var rail = document.getElementById('wbRail');
+  if (!rail) return;
+  var prev = document.getElementById('wbPrev');
+  var next = document.getElementById('wbNext');
+
+  function step() {
+    var frame = rail.querySelector('.wb-frame');
+    var styles = getComputedStyle(rail);
+    var gap = parseFloat(styles.columnGap || styles.gap) || 22;
+    return frame ? frame.getBoundingClientRect().width + gap : rail.clientWidth * 0.9;
+  }
+
+  function update() {
+    var max = rail.scrollWidth - rail.clientWidth - 2;
+    if (prev) prev.disabled = rail.scrollLeft <= 2;
+    if (next) next.disabled = rail.scrollLeft >= max;
+  }
+
+  if (prev) prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+  if (next) next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
+
+  rail.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+
+<!-- ===== Instagram reels (Watch & Buy) ===== -->
+<script async src="//www.instagram.com/embed.js"></script>
+<script>
+(function () {
+  function wbCheck() {
+    document.querySelectorAll('.wb-frame').forEach(function (f) {
+      f.classList.toggle('wb-fallback', !f.querySelector('iframe.instagram-media'));
+    });
+  }
+  window.addEventListener('load', function () {
+    if (window.instgrm && window.instgrm.Embeds) { window.instgrm.Embeds.process(); }
+    setTimeout(wbCheck, 7000);
+    setTimeout(wbCheck, 12000);
+  });
+})();
+</script>
+</body>
+</html>

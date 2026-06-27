@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.className='js';</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2C3124">
+<title>Collection — Alankrita Saree</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- shared global theme (nav, footer, cards, modal base, colours, fonts) -->
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ============================================================
+   COLLECTION-PAGE ONLY  (slide-in filter + colour variations)
+   ============================================================ */
+.col-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:0 6vw 1.2rem;max-width:1200px;margin:0 auto}
+.filter-open-btn{display:inline-flex;align-items:center;gap:.7rem;font-family:var(--body);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;padding:.85rem 1.5rem;border:1px solid var(--olive);background:transparent;color:var(--olive-deep);cursor:pointer;border-radius:2px;transition:.3s}
+.filter-open-btn:hover{background:var(--olive);color:var(--ivory)}
+.filter-open-btn svg{width:16px;height:16px;fill:currentColor}
+.filter-open-btn .badge{background:var(--gold);color:var(--olive-dark);font-size:.62rem;border-radius:40px;padding:.05rem .5rem;letter-spacing:.04em;font-weight:600;min-width:18px;text-align:center}
+.collection-count{font-family:var(--serif);font-style:italic;color:#76745f;font-size:1.02rem;margin:0}
+
+.active-chips{display:flex;flex-wrap:wrap;gap:.5rem;padding:0 6vw 1rem;max-width:1200px;margin:0 auto}
+.active-chip{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;letter-spacing:.06em;background:var(--ivory-soft);border:1px solid rgba(185,145,79,.4);color:var(--olive-deep);padding:.4rem .8rem;border-radius:40px}
+.active-chip button{background:none;border:none;cursor:pointer;color:var(--maroon);font-size:1rem;line-height:1;padding:0}
+.clear-all{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--maroon);background:none;border:none;cursor:pointer;text-decoration:underline;align-self:center}
+
+.filter-scrim{position:fixed;inset:0;background:rgba(28,31,20,.55);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .35s var(--ease),visibility 0s linear .35s;z-index:150}
+.filter-scrim.open{opacity:1;visibility:visible;transition:opacity .35s var(--ease)}
+.filter-panel{position:fixed;top:0;left:0;bottom:0;width:min(380px,86vw);background:var(--ivory);z-index:151;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .4s var(--ease);box-shadow:6px 0 40px -10px rgba(20,24,14,.5)}
+.filter-panel.open{transform:none}
+.fp-head{display:flex;align-items:center;justify-content:space-between;padding:1.6rem 1.6rem 1.2rem;border-bottom:1px solid rgba(185,145,79,.35)}
+.fp-head h3{font-family:var(--display);font-size:1.5rem;letter-spacing:.12em;color:var(--olive-deep);font-weight:400}
+.fp-close{background:none;border:none;font-size:1.8rem;line-height:1;color:var(--olive-deep);cursor:pointer}
+.fp-body{flex:1;overflow-y:auto;padding:1.4rem 1.6rem 2rem}
+.fp-section{padding:1.3rem 0;border-bottom:1px solid rgba(185,145,79,.25)}
+.fp-section:last-child{border-bottom:none}
+.fp-section h4{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.fp-opt{display:flex;align-items:center;gap:.8rem;padding:.5rem 0;cursor:pointer;font-size:.95rem;color:#44432f}
+.fp-opt input{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid rgba(90,97,71,.55);border-radius:3px;display:grid;place-content:center;cursor:pointer;transition:.2s}
+.fp-opt input:checked{background:var(--olive);border-color:var(--olive)}
+.fp-opt input:checked::after{content:'✓';color:var(--ivory);font-size:.7rem}
+.fp-opt .ct{margin-left:auto;font-size:.78rem;color:#9a9886}
+.range-wrap{padding:.4rem 0}
+.range-vals{display:flex;justify-content:space-between;font-size:.85rem;color:var(--olive-deep);margin-bottom:1.1rem;font-weight:500}
+.range-track{position:relative;height:34px}
+.range-track input[type=range]{position:absolute;width:100%;top:11px;height:3px;background:none;pointer-events:none;-webkit-appearance:none;appearance:none;margin:0}
+.range-track input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:20px;height:20px;border-radius:50%;background:var(--olive);border:2px solid var(--ivory);box-shadow:0 1px 5px rgba(0,0,0,.3);cursor:pointer}
+.range-track input[type=range]::-moz-range-thumb{pointer-events:auto;width:20px;height:20px;border-radius:50%;background:var(--olive);box-shadow:0 1px 5px rgba(0,0,0,.3);cursor:pointer;border:none}
+.range-rail{position:absolute;left:0;right:0;top:11px;height:3px;background:rgba(90,97,71,.25);border-radius:3px}
+.range-fill{position:absolute;top:11px;height:3px;background:var(--gold);border-radius:3px}
+.swatches{display:flex;flex-wrap:wrap;gap:.6rem}
+.swatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid transparent;outline:1px solid rgba(0,0,0,.12);transition:.2s;position:relative}
+.swatch.sel{border-color:var(--olive-deep)}
+.swatch.sel::after{content:'✓';position:absolute;inset:0;display:grid;place-content:center;color:#fff;font-size:.8rem;text-shadow:0 0 3px rgba(0,0,0,.6)}
+.fp-foot{padding:1.2rem 1.6rem calc(1.4rem + env(safe-area-inset-bottom));border-top:1px solid rgba(185,145,79,.35);display:flex;gap:.8rem}
+.fp-foot .btn,.fp-foot .fp-reset{flex:1;justify-content:center}
+.fp-reset{font-family:var(--body);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;background:transparent;border:1px solid rgba(90,97,71,.5);color:var(--olive-deep);padding:.95rem;cursor:pointer;border-radius:2px}
+
+.card-colors{display:flex;gap:.35rem;margin-top:.7rem;align-items:center}
+.card-colors span{width:15px;height:15px;border-radius:50%;outline:1px solid rgba(0,0,0,.12)}
+.card-colors .more{width:auto;outline:none;font-size:.7rem;color:#9a9886}
+
+.modal-colors{margin:1.4rem 0 .4rem}
+.modal-colors .lbl{font-size:.64rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
+.modal-colors .row{display:flex;gap:.7rem;flex-wrap:wrap}
+.color-opt{display:flex;flex-direction:column;align-items:center;gap:.35rem;cursor:pointer;background:none;border:none;padding:0}
+.color-opt .dot{width:34px;height:34px;border-radius:50%;outline:1px solid rgba(0,0,0,.15);border:2px solid transparent;transition:.2s}
+.color-opt.sel .dot{border-color:var(--olive-deep);transform:scale(1.05)}
+.color-opt .nm{font-size:.66rem;color:#76745f;letter-spacing:.02em}
+
+@media (max-width:760px){
+  .collection-count{order:2;width:100%}
+  .modal-colors .dot{width:30px;height:30px}
+}
+
+/* ===== hover / swipe COLOUR CAROUSEL on each saree card ===== */
+/* ===== hover / swipe COLOUR CAROUSEL on each saree card ===== */
+.card-cara{position:absolute;inset:0;overflow:hidden;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.card-cara.dragging{cursor:grabbing}
+.card-cara-track{display:flex;flex-wrap:nowrap;width:100%;height:100%;will-change:transform;transition:transform .45s cubic-bezier(.76,0,.24,1)}
+.card-cara.dragging .card-cara-track{transition:none}
+.card-cara-slide{position:relative;flex:0 0 100%;width:100%;height:100%;overflow:hidden}
+.card-cara-slide .saree-visual{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important}
+.cara-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:34px;height:34px;display:grid;place-content:center;padding:0;border:none;border-radius:50%;background:rgba(28,31,20,.42);color:var(--ivory,#F3ECDD);font-size:1.5rem;line-height:1;cursor:pointer;opacity:0;transition:opacity .3s,background .2s;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.cara-nav.prev{left:10px}
+.cara-nav.next{right:10px}
+.cara-nav:hover{background:rgba(28,31,20,.72)}
+.card-img:hover .cara-nav,.card-img:focus-within .cara-nav{opacity:1}
+.cara-dots{position:absolute;left:0;right:0;bottom:12px;z-index:4;display:flex;justify-content:center;gap:.4rem;pointer-events:none}
+.cara-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);transition:.25s}
+.cara-dots span.on{background:#fff;width:16px;border-radius:4px}
+.card-cara-name{position:absolute;left:0;right:0;top:14px;z-index:4;text-align:center;color:#fff;font-family:var(--body);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;opacity:0;transition:opacity .3s;text-shadow:0 1px 6px rgba(0,0,0,.55);pointer-events:none}
+.card-img:hover .card-cara-name,.card-img:focus-within .card-cara-name{opacity:1}
+.card-colors span[data-ci]{cursor:pointer;transition:.2s}
+.card-colors span.sel{box-shadow:0 0 0 2px var(--ivory,#F3ECDD),0 0 0 3px var(--gold,#C9A05C)}
+@media (hover:none){ .cara-nav{display:none} .card-cara-name{opacity:1} }
+</style>
+</head>
+<body class="">
+
+<nav id="nav">
+  <a class="logo" href="index.html">Alankrita<span>saree · pune</span></a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="collection.html" class="active">Collection</a></li>
+    <li><a href="story.html">Our Story</a></li>
+    <li><a href="craft.html">The Craft</a></li>
+    <li><a href="appointment.html">Book Appointment</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="socials.html">Our Socials</a></li>
+  </ul>
+</nav>
+
+<main class="page active" id="page-collection">
+  <div class="page-head">
+    <p class="eyebrow reveal">The Collection</p>
+    <h2 class="reveal d1">Six yards, <em>endless</em> stories</h2>
+    <p class="lede reveal d2">Tap any saree to see it up close and browse its colour variations — then continue on WhatsApp, where we'll share live photos, drape videos, and final pricing.</p>
+  </div>
+
+  <div class="col-toolbar reveal">
+    <button class="filter-open-btn" id="openFilters">
+      <svg viewBox="0 0 24 24"><path d="M3 5h18v2l-7 7v5l-4 2v-7L3 7z"/></svg>
+      Filters <span class="badge" id="filterBadge" style="display:none">0</span>
+    </button>
+    <p class="collection-count" id="collectionCount"></p>
+  </div>
+  <div class="active-chips" id="activeChips"></div>
+
+  <div class="collection-grid" id="collectionGrid"></div>
+</main>
+
+<!-- slide-in filter panel -->
+<div class="filter-scrim" id="filterScrim"></div>
+<aside class="filter-panel" id="filterPanel" aria-label="Filters">
+  <div class="fp-head">
+    <h3>Filters</h3>
+    <button class="fp-close" id="closeFilters" aria-label="Close filters">&times;</button>
+  </div>
+  <div class="fp-body" id="fpBody"></div>
+  <div class="fp-foot">
+    <button class="fp-reset" id="resetFilters">Reset</button>
+    <button class="btn solid" id="applyFilters" style="border:none">Show <span id="applyCount"></span></button>
+  </div>
+</aside>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-logo">Alankrita</div>
+      <p style="font-family:var(--serif);font-style:italic;max-width:32ch">Handwoven sarees, curated with love in Pune — from the loom, for the legacy.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="index.html">Home</a>
+      <a href="collection.html">Collection</a>
+      <a href="story.html">Our Story</a>
+      <a href="craft.html">The Craft</a>
+    </div>
+    <div>
+      <h4>Visit</h4>
+      <a href="appointment.html">Book Appointment</a>
+      <a href="contact.html">Contact</a>
+      <a href="https://www.instagram.com/alankritasaree?igsh=ejkxY3gwem9jM3Mz" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/918412845177" target="_blank" rel="noopener">WhatsApp · +91 84128 45177</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Alankrita Saree, Pune. All rights reserved.</span>
+    <span>4, Mayur Colony, Desai Bandhu Ambewale Building, 5th Floor</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/918412845177?text=Hello%20Alankrita%20Saree!" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-2.9-1.3-4.8-4.2-5-4.4-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.8.8 1.9.1.1.1.3 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l.8-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg>
+</a>
+
+<script>
+(function(){
+  'use strict';
+  const WA='918412845177';
+  const WA_SVG='<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-2.9-1.3-4.8-4.2-5-4.4-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.8.8 1.9.1.1.1.3 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l.8-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg>';
+
+  /* ---------- nav + mobile menu (inlined, self-contained) ---------- */
+  const nav=document.getElementById('nav'), burger=document.getElementById('burger'), navLinks=document.getElementById('navLinks');
+  burger.addEventListener('click',()=>{ navLinks.classList.toggle('open'); burger.classList.toggle('open'); });
+  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ navLinks.classList.remove('open'); burger.classList.remove('open'); }));
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+  nav.classList.toggle('scrolled',window.scrollY>40);
+
+  /* ---------- reveal-in helper (inlined) ---------- */
+  const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target);}}),{threshold:0.01,rootMargin:'0px 0px -8% 0px'});
+  function reveal(){ const vh=innerHeight||800; document.querySelectorAll('.reveal:not(.in)').forEach(el=>{ if(el.getBoundingClientRect().top<vh*0.92) el.classList.add('in'); else ro.observe(el); }); }
+
+  const silk=(b1,b2,b3,d1,d2)=>({body:`linear-gradient(165deg,${b1},${b2} 55%,${b3})`,border:`linear-gradient(180deg,${d1},${d2})`});
+
+  const sarees=[
+    {name:'Mor Bangdi Paithani',fabric:'Paithani',occasion:'Bridal',priceVal:24500,blurb:'Pure silk · gold zari · Yeola',tag:'Signature',
+     desc:'A regal Yeola Paithani, its pallu crowned with the iconic mor-bangdi (peacock-bangle) motif woven entirely in pure gold zari. A bridal heirloom in every sense.',
+     colors:[{name:'Maroon',hex:'#7C3B3B',...silk('#7C3B3B','#5E2828','#4A1F1F','#C9A05C','#9A7438')},{name:'Royal Blue',hex:'#2E4A5C',...silk('#2E4A5C','#1F3645','#16242F','#D8BC85','#B9914F')},{name:'Emerald',hex:'#2F5D4B',...silk('#2F5D4B','#214636','#163024','#D8BC85','#B9914F')}]},
+    {name:'Neelambari Paithani',fabric:'Paithani',occasion:'Festive',priceVal:28900,blurb:'Peacock-blue silk · double pallu',tag:'Heirloom',
+     desc:'Peacock-blue mulberry silk with a rare double pallu, hand-woven over months. The zari border catches light from every angle — made for festive evenings.',
+     colors:[{name:'Peacock Blue',hex:'#2E4A5C',...silk('#2E4A5C','#1F3645','#16242F','#D8BC85','#B9914F')},{name:'Teal',hex:'#1F6F6B',...silk('#1F6F6B','#155350','#0E3A38','#D8BC85','#B9914F')},{name:'Violet',hex:'#5A4A82',...silk('#5A4A82','#433763','#2F2747','#D8BC85','#B9914F')}]},
+    {name:'Kanjeevaram Kalyani',fabric:'Kanjeevaram',occasion:'Bridal',priceVal:32400,blurb:'Temple border · pure mulberry silk',tag:'Bridal',
+     desc:'A South-Indian temple-border Kanjeevaram in rich plum, woven from pure mulberry silk with a contrast korvai border. The quintessential South Indian bridal drape.',
+     colors:[{name:'Plum',hex:'#8A3A55',...silk('#8A3A55','#6B2740','#4E1B2E','#C9A05C','#A87E3F')},{name:'Kunku Red',hex:'#9C2F2F',...silk('#9C2F2F','#7A1F1F','#5C1616','#D8BC85','#B9914F')},{name:'Mustard',hex:'#B8902E',...silk('#B8902E','#977322','#6E5318','#3E2F12','#2A2010')}]},
+    {name:'Banarasi Shahmina',fabric:'Banarasi',occasion:'Festive',priceVal:18750,blurb:'Katan silk · sona-rupa zari',tag:'Festive',
+     desc:'Olive-green Katan silk from Varanasi, brocaded with sona-rupa (gold-silver) zari jaal. Light enough to drape all evening, opulent enough for any celebration.',
+     colors:[{name:'Olive',hex:'#5A6147',...silk('#5A6147','#434A33','#343A27','#D8BC85','#B9914F')},{name:'Wine',hex:'#6E2A3A',...silk('#6E2A3A','#54202C','#3C1620','#D8BC85','#B9914F')},{name:'Ink Blue',hex:'#27364F',...silk('#27364F','#1C283B','#121A29','#D8BC85','#B9914F')}]},
+    {name:'Chanderi Chandrika',fabric:'Chanderi',occasion:'Everyday',priceVal:9200,blurb:'Silk-cotton · sheer drape',tag:'Everyday Luxe',
+     desc:'A whisper-light Chanderi silk-cotton in warm ivory, with a fine sheer body and delicate zari buti. Effortless luxury for daytime gatherings and quiet Sundays.',
+     colors:[{name:'Ivory',hex:'#D9CBB0',...silk('#D9CBB0','#C2B190','#A9966F','#8A6B3A','#6E5126')},{name:'Rose',hex:'#D5A6A0',...silk('#D5A6A0','#BE8B85','#A06F69','#8A6B3A','#6E5126')},{name:'Mint',hex:'#A9C2AE',...silk('#A9C2AE','#90AA96','#74907B','#8A6B3A','#6E5126')}]},
+    {name:'Tussar Vanya',fabric:'Tussar',occasion:'Everyday',priceVal:11800,blurb:'Wild tussar silk · earthy gold',tag:'Earthy',
+     desc:'Wild tussar silk with its natural golden slub texture and an earthy hand-block border. Grounded, organic, and quietly elegant for everyday wear.',
+     colors:[{name:'Honey',hex:'#A87E4B',...silk('#A87E4B','#8C6437','#6E4C26','#4A3A1E','#352A14')},{name:'Rust',hex:'#9A4E2E',...silk('#9A4E2E','#7C3D22','#5C2C18','#3E2614','#2A1A0E')},{name:'Moss',hex:'#6B6B3A',...silk('#6B6B3A','#52522C','#3A3A1E','#2C2410','#1E180A')}]},
+    {name:'Organza Megha',fabric:'Organza',occasion:'Festive',priceVal:13500,blurb:'Featherlight organza · pastel sheen',tag:'Soirée',
+     desc:'Featherlight organza in a misty lilac, with a soft pearlescent sheen and zari-edged pallu. The drape of choice for cocktail soirées and receptions.',
+     colors:[{name:'Lilac',hex:'#B7A6B8',...silk('#B7A6B8','#988199','#7B6680','#D8BC85','#B9914F')},{name:'Sky',hex:'#A6BBC8',...silk('#A6BBC8','#869FB0','#6C8696','#D8BC85','#B9914F')},{name:'Blush',hex:'#D2A9B0',...silk('#D2A9B0','#B98D95','#9E727B','#D8BC85','#B9914F')}]},
+    {name:'Irkali Indrayani',fabric:'Cotton',occasion:'Everyday',priceVal:7900,blurb:'Khun border · Deccan weave',tag:'Classic',
+     desc:'A classic Deccan handloom in deep forest green with a traditional Khun border. Breathable, durable, and timeless — a true everyday Maharashtrian weave.',
+     colors:[{name:'Forest',hex:'#3E5A4F',...silk('#3E5A4F','#2C453B','#1F332B','#C9A05C','#9A7438')},{name:'Indigo',hex:'#34466B',...silk('#34466B','#283651','#1B2539','#C9A05C','#9A7438')},{name:'Brick',hex:'#9A4733',...silk('#9A4733','#7A3627','#5A271C','#C9A05C','#9A7438')}]},
+    {name:'Raktima Paithani',fabric:'Paithani',occasion:'Bridal',priceVal:26300,blurb:'Kunku-red silk · parrot motifs',tag:'Wedding',
+     desc:'Kunku-red pure silk Paithani scattered with woven popat (parrot) motifs and a gleaming gold pallu. The auspicious bridal red, reimagined as an heirloom.',
+     colors:[{name:'Kunku Red',hex:'#9C2F2F',...silk('#9C2F2F','#7A1F1F','#5C1616','#D8BC85','#B9914F')},{name:'Magenta',hex:'#8E2E5C',...silk('#8E2E5C','#6E2347','#501934','#D8BC85','#B9914F')},{name:'Saffron',hex:'#C8762E',...silk('#C8762E','#A35E22','#7A4618','#3E2F12','#2A2010')}]}
+  ];
+
+  const rupee=n=>'₹'+n.toLocaleString('en-IN');
+  const visualHTML=(c,extra='')=>`<div class="saree-visual${extra}"><div class="body" style="background:${c.body}"></div><div class="pleats"></div><div class="buti"></div><div class="sheen"></div><div class="border" style="background:${c.border}"></div></div>`;
+  const waLink=(s,c)=>{const m=encodeURIComponent(`Hello Alankrita Saree! I would like to buy the "${s.name}" in ${c.name} (${s.fabric} · ${s.occasion}) listed at ${rupee(s.priceVal)}. Please share details and availability.`);return `https://wa.me/${WA}?text=${m}`;};
+
+  const fabrics=[...new Set(sarees.map(s=>s.fabric))];
+  const occasions=['Bridal','Festive','Everyday'];
+  const colorMap={}; sarees.forEach(s=>s.colors.forEach(c=>{if(!colorMap[c.name])colorMap[c.name]=c.hex;}));
+  const colorNames=Object.keys(colorMap);
+  const PMIN=Math.min(...sarees.map(s=>s.priceVal)), PMAX=Math.max(...sarees.map(s=>s.priceVal));
+
+  const mk=s=>({fabric:new Set(s.fabric),occasion:new Set(s.occasion),color:new Set(s.color),min:s.min,max:s.max});
+  let state={fabric:new Set(),occasion:new Set(),color:new Set(),min:PMIN,max:PMAX};
+  let draft=mk(state);
+
+  const fpBody=document.getElementById('fpBody');
+  function checkSection(title,key,values,counter){
+    const sec=document.createElement('div'); sec.className='fp-section'; sec.innerHTML=`<h4>${title}</h4>`;
+    values.forEach(v=>{
+      const lab=document.createElement('label'); lab.className='fp-opt';
+      lab.innerHTML=`<input type="checkbox" ${draft[key].has(v)?'checked':''}><span>${v}</span><span class="ct">${counter(v)}</span>`;
+      lab.querySelector('input').onchange=e=>{ e.target.checked?draft[key].add(v):draft[key].delete(v); updateApply(); };
+      sec.appendChild(lab);
+    });
+    return sec;
+  }
+  function buildPanel(){
+    fpBody.innerHTML='';
+    fpBody.appendChild(checkSection('Fabric','fabric',fabrics,v=>sarees.filter(s=>s.fabric===v).length));
+    fpBody.appendChild(checkSection('Occasion','occasion',occasions,v=>sarees.filter(s=>s.occasion===v).length));
+    const cs=document.createElement('div'); cs.className='fp-section'; cs.innerHTML='<h4>Colour</h4>';
+    const sw=document.createElement('div'); sw.className='swatches';
+    colorNames.forEach(name=>{ const b=document.createElement('button'); b.type='button'; b.className='swatch'+(draft.color.has(name)?' sel':''); b.style.background=colorMap[name]; b.title=name; b.setAttribute('aria-label',name);
+      b.onclick=()=>{ draft.color.has(name)?draft.color.delete(name):draft.color.add(name); b.classList.toggle('sel'); updateApply(); }; sw.appendChild(b); });
+    cs.appendChild(sw); fpBody.appendChild(cs);
+    const ps=document.createElement('div'); ps.className='fp-section';
+    ps.innerHTML=`<h4>Price</h4><div class="range-wrap"><div class="range-vals"><span id="rvMin"></span><span id="rvMax"></span></div><div class="range-track"><div class="range-rail"></div><div class="range-fill" id="rangeFill"></div><input type="range" id="rMin" min="${PMIN}" max="${PMAX}" step="100" value="${draft.min}"><input type="range" id="rMax" min="${PMIN}" max="${PMAX}" step="100" value="${draft.max}"></div></div>`;
+    fpBody.appendChild(ps);
+    const rMin=ps.querySelector('#rMin'), rMax=ps.querySelector('#rMax');
+    const sync=()=>{ let lo=+rMin.value,hi=+rMax.value; if(lo>hi-500){ if(document.activeElement===rMin) rMin.value=hi-500; else rMax.value=lo+500; } draft.min=+rMin.value; draft.max=+rMax.value; paintRange(); updateApply(); };
+    rMin.oninput=sync; rMax.oninput=sync; paintRange();
+  }
+  function paintRange(){ const fill=document.getElementById('rangeFill'); const span=PMAX-PMIN; fill.style.left=((draft.min-PMIN)/span*100)+'%'; fill.style.right=(100-(draft.max-PMIN)/span*100)+'%'; document.getElementById('rvMin').textContent=rupee(draft.min); document.getElementById('rvMax').textContent=rupee(draft.max)+(draft.max===PMAX?'+':''); }
+
+  function matches(s,f){
+    if(f.fabric.size && !f.fabric.has(s.fabric)) return false;
+    if(f.occasion.size && !f.occasion.has(s.occasion)) return false;
+    if(f.color.size && !s.colors.some(c=>f.color.has(c.name))) return false;
+    if(s.priceVal<f.min || s.priceVal>f.max) return false;
+    return true;
+  }
+  const countWith=f=>sarees.filter(s=>matches(s,f)).length;
+
+  /* ---------- per-card colour carousel (hover / swipe / arrows) ---------- */
+  function setupCara(card,s){
+    const wrap=card.querySelector('.card-img');
+    const cara=wrap&&wrap.querySelector('.card-cara');
+    const n=s.colors.length;
+    let dragged=false;
+    card._ci=0;
+    if(!cara||n<2) return ()=>false;
+    const track=cara.querySelector('.card-cara-track');
+    const navDots=[...wrap.querySelectorAll('.cara-dots span')];
+    const nameEl=wrap.querySelector('.card-cara-name');
+    const lowDots=[...card.querySelectorAll('.card-colors span[data-ci]')];
+    const buy=card.querySelector('.buy-btn');
+    let idx=0;
+    function update(){
+      track.style.transform='translateX('+(-idx*100)+'%)';
+      navDots.forEach((d,j)=>d.classList.toggle('on',j===idx));
+      lowDots.forEach((d,j)=>d.classList.toggle('sel',j===idx));
+      if(nameEl) nameEl.textContent=s.colors[idx].name;
+      if(buy) buy.href=waLink(s,s.colors[idx]);
+      card._ci=idx;
+    }
+    function go(i){ idx=(i+n)%n; update(); }
+    const prev=wrap.querySelector('.cara-nav.prev'), next=wrap.querySelector('.cara-nav.next');
+    prev&&prev.addEventListener('click',e=>{e.stopPropagation();go(idx-1);});
+    next&&next.addEventListener('click',e=>{e.stopPropagation();go(idx+1);});
+    lowDots.forEach((d,j)=>d.addEventListener('click',e=>{e.stopPropagation();go(j);}));
+    let sx=0,sy=0,dx=0,active=false,lock=0;   // lock: 0 undecided · 1 horizontal · 2 vertical
+    function onMove(e){
+      dx=e.clientX-sx; const dy=e.clientY-sy;
+      if(lock===0){
+        if(Math.abs(dx)>8&&Math.abs(dx)>=Math.abs(dy)){ lock=1; dragged=true; cara.classList.add('dragging'); }
+        else if(Math.abs(dy)>8){ lock=2; finish(); return; }
+        else return;
+      }
+      if(lock===1){ if(e.cancelable)e.preventDefault(); track.style.transform='translateX(calc('+(-idx*100)+'% + '+dx+'px))'; }
+    }
+    function finish(){
+      window.removeEventListener('pointermove',onMove);
+      window.removeEventListener('pointerup',finish);
+      window.removeEventListener('pointercancel',finish);
+      if(active&&lock===1){
+        cara.classList.remove('dragging');
+        const w=cara.offsetWidth||1, th=Math.min(60,w*0.2);
+        if(dx<=-th) idx=(idx+1)%n; else if(dx>=th) idx=(idx-1+n)%n;
+        update();
+      }
+      active=false; lock=0;
+      setTimeout(()=>{dragged=false;},50);
+    }
+    cara.addEventListener('pointerdown',e=>{
+      if(e.button&&e.button!==0) return;
+      active=true; lock=0; dx=0; sx=e.clientX; sy=e.clientY;
+      window.addEventListener('pointermove',onMove,{passive:false});
+      window.addEventListener('pointerup',finish);
+      window.addEventListener('pointercancel',finish);
+    });
+    return ()=>dragged;
+  }
+
+  const grid=document.getElementById('collectionGrid'), countEl=document.getElementById('collectionCount');
+  function render(){
+    grid.innerHTML='';
+    const shown=sarees.filter(s=>matches(s,state));
+    countEl.textContent=shown.length+(shown.length===1?' saree':' sarees');
+    if(!shown.length){ grid.innerHTML='<p style="grid-column:1/-1;text-align:center;font-family:var(--serif);font-style:italic;font-size:1.2rem;color:#76745f;padding:3rem 0">No sarees match these filters — try widening your selection.</p>'; return; }
+    shown.forEach((s,i)=>{
+      const idx=sarees.indexOf(s);
+      const multi=s.colors.length>1;
+      const dots=s.colors.slice(0,4).map((c,j)=>`<span class="${j===0?'sel':''}" style="background:${c.hex}" data-ci="${j}"></span>`).join('')+(s.colors.length>4?`<span class="more">+${s.colors.length-4}</span>`:'');
+      const slides=s.colors.map(c=>`<div class="card-cara-slide">${visualHTML(c)}</div>`).join('');
+      const caraNav=multi?`<button class="cara-nav prev" type="button" aria-label="Previous colour">‹</button><button class="cara-nav next" type="button" aria-label="Next colour">›</button>`:'';
+      const caraName=multi?`<span class="card-cara-name">${s.colors[0].name}</span>`:'';
+      const caraDots=multi?`<div class="cara-dots">${s.colors.map((c,j)=>`<span class="${j===0?'on':''}"></span>`).join('')}</div>`:'';
+      const card=document.createElement('div'); card.className='card reveal'+(i%3===1?' d1':i%3===2?' d2':''); card.setAttribute('role','button'); card.tabIndex=0; card.setAttribute('aria-label','View '+s.name);
+      card.innerHTML=`<div class="card-img parallax-frame"><span class="card-tag">${s.tag}</span><div class="card-cara"><div class="card-cara-track">${slides}</div></div>${caraNav}${caraName}${caraDots}<span class="card-view">View details</span></div>
+        <div class="card-body"><h3>${s.name}</h3><p class="card-fabric">${s.blurb}</p><div class="card-colors">${dots}</div>
+        <div class="card-foot" style="margin-top:.9rem"><span class="price">${rupee(s.priceVal)}</span><a class="buy-btn" href="${waLink(s,s.colors[0])}" target="_blank" rel="noopener">${WA_SVG} Buy on WhatsApp</a></div></div>`;
+      const isDragged=setupCara(card,s);
+      card.addEventListener('click',e=>{ if(e.target.closest('.buy-btn'))return; if(e.target.closest('.cara-nav'))return; if(e.target.closest('.card-colors span'))return; if(isDragged())return; openModal(idx,card._ci||0); });
+      card.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openModal(idx,card._ci||0);} });
+      grid.appendChild(card);
+    });
+    reveal();
+  }
+
+  const chipBar=document.getElementById('activeChips'), badge=document.getElementById('filterBadge');
+  const activeCount=()=>state.fabric.size+state.occasion.size+state.color.size+((state.min>PMIN||state.max<PMAX)?1:0);
+  function renderChips(){
+    chipBar.innerHTML='';
+    const add=(label,rm)=>{ const c=document.createElement('span'); c.className='active-chip'; c.textContent=label; const x=document.createElement('button'); x.innerHTML='&times;'; x.onclick=rm; c.appendChild(x); chipBar.appendChild(c); };
+    state.fabric.forEach(v=>add(v,()=>{state.fabric.delete(v);commit();}));
+    state.occasion.forEach(v=>add(v,()=>{state.occasion.delete(v);commit();}));
+    state.color.forEach(v=>add('● '+v,()=>{state.color.delete(v);commit();}));
+    if(state.min>PMIN||state.max<PMAX) add(`${rupee(state.min)}–${rupee(state.max)}`,()=>{state.min=PMIN;state.max=PMAX;commit();});
+    if(activeCount()){ const ca=document.createElement('button'); ca.className='clear-all'; ca.textContent='Clear all'; ca.onclick=()=>{ state={fabric:new Set(),occasion:new Set(),color:new Set(),min:PMIN,max:PMAX}; commit(); }; chipBar.appendChild(ca); }
+    const n=activeCount(); badge.style.display=n?'inline-block':'none'; badge.textContent=n;
+  }
+  function commit(){ renderChips(); render(); }
+
+  const scrim=document.getElementById('filterScrim'), panel=document.getElementById('filterPanel');
+  const openPanel=()=>{ draft=mk(state); buildPanel(); updateApply(); scrim.classList.add('open'); panel.classList.add('open'); document.body.style.overflow='hidden'; };
+  const closePanel=()=>{ scrim.classList.remove('open'); panel.classList.remove('open'); if(!modalOpen()) document.body.style.overflow=''; };
+  const updateApply=()=>{ document.getElementById('applyCount').textContent='('+countWith(draft)+')'; };
+  document.getElementById('openFilters').onclick=openPanel;
+  document.getElementById('closeFilters').onclick=closePanel;
+  scrim.onclick=closePanel;
+  document.getElementById('applyFilters').onclick=()=>{ state=mk(draft); commit(); closePanel(); };
+  document.getElementById('resetFilters').onclick=()=>{ draft={fabric:new Set(),occasion:new Set(),color:new Set(),min:PMIN,max:PMAX}; buildPanel(); updateApply(); };
+
+  /* ---------- detail modal with colour variations ---------- */
+  let modal;
+  const modalOpen=()=>modal&&modal.classList.contains('open');
+  function openModal(idx,startColor){
+    const s=sarees[idx]; let sel=Math.min(Math.max(startColor||0,0),s.colors.length-1);
+    if(!modal){
+      modal=document.createElement('div'); modal.id='sareeModal'; modal.className='modal';
+      modal.innerHTML=`<div class="modal-backdrop" data-close></div>
+        <div class="modal-card" role="dialog" aria-modal="true">
+          <button class="modal-close" aria-label="Close" data-close>&times;</button>
+          <div class="modal-img parallax-frame"><span class="modal-tag"></span><div class="mvis"></div></div>
+          <div class="modal-info">
+            <p class="modal-meta"></p><h3 class="modal-name"></h3><p class="modal-price"></p><p class="modal-desc"></p>
+            <div class="modal-colors"><p class="lbl">Colour <span class="cur" style="text-transform:none;letter-spacing:0;color:#54523f"></span></p><div class="row"></div></div>
+            <div class="modal-specs"></div>
+            <a class="btn solid modal-buy" target="_blank" rel="noopener"></a>
+            <p class="modal-note">Your selected colour is sent with the WhatsApp enquiry — we'll share live photos &amp; final pricing.</p>
+          </div></div>`;
+      document.body.appendChild(modal);
+      modal.querySelectorAll('[data-close]').forEach(el=>el.onclick=closeModal);
+    }
+    const paint=()=>{
+      const c=s.colors[sel];
+      modal.querySelector('.mvis').outerHTML=visualHTML(c,' mvis');
+      modal.querySelector('.modal-tag').textContent=s.tag;
+      modal.querySelector('.modal-meta').textContent=`${s.fabric} · ${s.occasion}`;
+      modal.querySelector('.modal-name').textContent=s.name;
+      modal.querySelector('.modal-price').textContent=rupee(s.priceVal);
+      modal.querySelector('.modal-desc').textContent=s.desc;
+      modal.querySelector('.modal-colors .cur').textContent='— '+c.name;
+      modal.querySelector('.modal-specs').innerHTML=`<span><b>Fabric</b>${s.fabric}</span><span><b>Occasion</b>${s.occasion}</span><span><b>Colours</b>${s.colors.map(x=>x.name).join(', ')}</span>`;
+      const buy=modal.querySelector('.modal-buy'); buy.href=waLink(s,c); buy.innerHTML=`${WA_SVG} Enquire / Buy on WhatsApp`;
+      const row=modal.querySelector('.modal-colors .row'); row.innerHTML='';
+      s.colors.forEach((cc,j)=>{ const o=document.createElement('button'); o.type='button'; o.className='color-opt'+(j===sel?' sel':''); o.innerHTML=`<span class="dot" style="background:${cc.hex}"></span><span class="nm">${cc.name}</span>`; o.onclick=()=>{ sel=j; paint(); }; row.appendChild(o); });
+    };
+    paint(); modal.classList.add('open'); document.body.style.overflow='hidden';
+  }
+  function closeModal(){ if(modal) modal.classList.remove('open'); if(!panel.classList.contains('open')) document.body.style.overflow=''; }
+
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closePanel(); closeModal(); } });
+
+  commit();
+})();
+</script>
+</body>
+</html>

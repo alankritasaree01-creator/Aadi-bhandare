@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.className='js';</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2C3124">
+<title>Our Story — Alankrita Saree</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+<style>
+  /* ===== Reveal keyframes ===== */
+  @keyframes srRise{from{opacity:0;transform:translateY(42px)}to{opacity:1;transform:none}}
+  @keyframes srLeft{from{opacity:0;transform:translateX(-52px)}to{opacity:1;transform:none}}
+  @keyframes srRight{from{opacity:0;transform:translateX(52px)}to{opacity:1;transform:none}}
+
+  /* ===== Path A: modern browsers — pure CSS scroll-driven reveal (NO JavaScript) ===== */
+  @supports (animation-timeline: view()){
+    @media (prefers-reduced-motion: no-preference){
+      .page-head,
+      #page-story > section{
+        animation: srRise both;
+        animation-timeline: view();
+        animation-range: entry 8% cover 30%;
+      }
+      .sr-point.sr-left{ animation: srLeft both; animation-timeline: view(); animation-range: entry 0% cover 22%; }
+      .sr-point.sr-right{ animation: srRight both; animation-timeline: view(); animation-range: entry 0% cover 22%; }
+    }
+  }
+
+  /* ===== Path B: older browsers — JS adds .reveal-in. Hidden state lives ONLY here, so it never clashes with Path A ===== */
+  @supports not (animation-timeline: view()){
+    html.srjs .page-head[data-reveal],
+    html.srjs #page-story > section[data-reveal],
+    html.srjs .sr-point[data-reveal]{
+      opacity:0; transform:translateY(42px);
+      transition:opacity .9s cubic-bezier(.22,.61,.36,1),transform .9s cubic-bezier(.22,.61,.36,1);
+    }
+    html.srjs .sr-point.sr-left[data-reveal]{transform:translateX(-52px)}
+    html.srjs .sr-point.sr-right[data-reveal]{transform:translateX(52px)}
+    html.srjs [data-reveal].reveal-in{opacity:1 !important;transform:none !important}
+    @media (prefers-reduced-motion: reduce){ html.srjs [data-reveal]{opacity:1 !important;transform:none !important} }
+  }
+
+  /* ===== Our Journey — alternating curved (zig-zag) timeline ===== */
+  .sr-journey{position:relative;max-width:880px;margin:0 auto;padding:.5rem 0}
+  .sr-spine{position:absolute;top:.5rem;bottom:.5rem;left:50%;width:2px;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(201,160,92,.6) 5%,rgba(201,160,92,.6) 95%,transparent);border-radius:2px}
+  .sr-point{position:relative;width:50%;box-sizing:border-box;margin:1.4rem 0;padding:0 2.8rem}
+  .sr-point.sr-left{margin-left:0;text-align:right}
+  .sr-point.sr-right{margin-left:50%;text-align:left}
+  .sr-node{position:absolute;top:.35rem;width:15px;height:15px;border-radius:50%;background:var(--gold,#C9A05C);box-shadow:0 0 0 6px rgba(201,160,92,.14),0 0 14px rgba(201,160,92,.55);z-index:3}
+  .sr-point.sr-left .sr-node{right:-7.5px}
+  .sr-point.sr-right .sr-node{left:-7.5px}
+  .sr-point::before{content:'';position:absolute;top:.5rem;width:1.7rem;height:1.7rem;border-bottom:2px solid rgba(201,160,92,.5);z-index:2}
+  .sr-point.sr-left::before{right:0;border-right:2px solid rgba(201,160,92,.5);border-radius:0 0 16px 0}
+  .sr-point.sr-right::before{left:0;border-left:2px solid rgba(201,160,92,.5);border-radius:0 0 0 16px}
+  .sr-card{display:inline-block;max-width:32ch;text-align:left}
+  .sr-year{display:block;font-family:var(--body,'Karla',sans-serif);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold,#C9A05C);margin-bottom:.45rem}
+  .sr-card h3{font-family:var(--serif,'Cormorant Garamond',serif);font-weight:500;font-size:clamp(1.15rem,2.4vw,1.4rem);margin:0 0 .45rem;line-height:1.25}
+  .sr-card p{font-family:var(--body,'Karla',sans-serif);font-size:.94rem;line-height:1.7;margin:0;opacity:.82}
+  @media (max-width:680px){
+    .sr-journey{max-width:none}
+    .sr-spine{left:8px}
+    .sr-point{width:100%;margin-left:0 !important;text-align:left !important;padding:0 0 0 2.6rem}
+    .sr-point .sr-node{left:1px !important;right:auto !important}
+    .sr-point::before{display:none}
+    .sr-card{max-width:none;text-align:left}
+  }
+</style>
+</head>
+<body class="">
+
+<nav id="nav">
+  <a class="logo" href="index.html">Alankrita<span>saree · pune</span></a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="collection.html">Collection</a></li>
+    <li><a href="story.html" class="active">Our Story</a></li>
+    <li><a href="craft.html">The Craft</a></li>
+    <li><a href="appointment.html">Book Appointment</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="socials.html">Our Socials</a></li>
+  </ul>
+</nav>
+
+<main class="page active" id="page-story">
+<div class="page-head">
+    <p class="eyebrow">Our Story</p>
+    <h2>Born in Pune, <em>woven</em> across India</h2>
+    <p class="lede">A house built not on inventory, but on the hands that weave it.</p>
+  </div>
+
+  <section style="padding-top:1rem">
+    <div class="story-grid">
+      <div class="parallax-frame silk-panel" style="height:600px">
+        <div class="saree-visual parallax-zoom" data-zoom>
+          <div class="body" style="background:linear-gradient(165deg,#5A6147,#434A33 55%,#343A27)"></div>
+          <div class="pleats"></div><div class="buti"></div><div class="sheen"></div>
+          <div class="border" style="background:linear-gradient(180deg,#D8BC85,#B9914F)"></div>
+        </div>
+      </div>
+      <div>
+        <p class="dropcap">Alankrita — the Sanskrit word for “adorned” — began as one family's love affair with the handloom. What started as quiet trunk-shows for friends in Mayur Colony grew, drape by drape, into a Pune atelier trusted for weaves that are honest about where they come from.</p>
+        <p>We travel to the loom clusters ourselves — Yeola and Paithan for Paithanis, Kanchipuram for temple-border silks, Varanasi for brocades, Chanderi for whisper-light cottons — and sit with weaver families whose looms have sung for generations. Every saree in our collection is chosen in person, never from a catalogue.</p>
+        <p>For us, a saree is not stock. It is a promise: that the woman who wears it carries forward a craft, a livelihood, and a story older than any trend. When you drape an Alankrita, you carry a weaver's months of patience on your shoulder.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="num">120+</div><div class="lbl">Weaver families</div></div>
+          <div class="stat"><div class="num">6</div><div class="lbl">Weaving regions</div></div>
+          <div class="stat"><div class="num">1</div><div class="lbl">Promise of purity</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="zari"></div>
+
+  <!-- Invitation banner -->
+  <section class="invite">
+    <div class="invite-inner">
+      <p class="sparkle">✨ Alankrita — Six Yards of Heritage. A Lifetime of Grace ✨</p>
+      <div class="rule"></div>
+      <p>Presenting a handpicked collection of pure silk and handloom sarees — woven with tradition, soaked in culture, and curated to perfection. Our brand is a humble tribute to the artisans who keep India's textile legacy alive.</p>
+      <p>You are cordially invited to visit our boutique and witness our exclusive range of sarees that blends heritage with elegance. We await the chance to delight you with our artisanal treasures!</p>
+      <div style="margin-top:2.4rem"><a class="btn solid" href="appointment.html">Book a Private Visit</a></div>
+    </div>
+  </section>
+
+  <!-- What we stand for -->
+  <section>
+    <div style="text-align:center;max-width:680px;margin:0 auto 3.5rem">
+      <p class="eyebrow">What we stand for</p>
+      <h2>Three vows we <em>never</em> break</h2>
+    </div>
+    <div class="values">
+      <div class="value"><div class="glyph">शुद्धता</div><h3>Purity First</h3><p>Only pure silk, pure cotton, and real zari. If a weave isn't what it claims to be, it never reaches our shelves.</p></div>
+      <div class="value"><div class="glyph">कारागीर</div><h3>Artisan-Led</h3><p>We pay fairly and source directly, so the weaver's family — not a middleman — earns from their own loom.</p></div>
+      <div class="value"><div class="glyph">वारसा</div><h3>Heritage Kept</h3><p>Every motif we sell carries a regional story. We keep these living traditions alive by putting them back into wardrobes.</p></div>
+    </div>
+  </section>
+
+  <div class="zari"></div>
+
+  <!-- A drape for every chapter (gallery) -->
+  <section style="background:var(--ivory-soft)">
+    <div style="text-align:center;max-width:680px;margin:0 auto">
+      <p class="eyebrow">From our looms</p>
+      <h2>A drape for every <em>chapter</em></h2>
+      <p class="lede" style="margin-left:auto;margin-right:auto">Weddings, festivals, quiet Sundays — there is a saree in our story for each of yours.</p>
+    </div>
+    <div class="story-gallery">
+      <div class="tile parallax-frame">
+        <div class="saree-visual"><div class="body" style="background:linear-gradient(165deg,#9C2F2F,#7A1F1F 55%,#5C1616)"></div><div class="pleats"></div><div class="buti"></div><div class="sheen"></div><div class="border" style="background:linear-gradient(180deg,#D8BC85,#B9914F)"></div></div>
+        <span class="cap">The Bridal Reds</span>
+      </div>
+      <div class="tile parallax-frame">
+        <div class="saree-visual"><div class="body" style="background:linear-gradient(165deg,#2E4A5C,#1F3645 55%,#16242F)"></div><div class="pleats"></div><div class="buti"></div><div class="sheen"></div><div class="border" style="background:linear-gradient(180deg,#D8BC85,#B9914F)"></div></div>
+        <span class="cap">The Peacock Blues</span>
+      </div>
+      <div class="tile parallax-frame">
+        <div class="saree-visual"><div class="body" style="background:linear-gradient(165deg,#5A6147,#434A33 55%,#343A27)"></div><div class="pleats"></div><div class="buti"></div><div class="sheen"></div><div class="border" style="background:linear-gradient(180deg,#D8BC85,#B9914F)"></div></div>
+        <span class="cap">The Festive Greens</span>
+      </div>
+      <div class="tile parallax-frame">
+        <div class="saree-visual"><div class="body" style="background:linear-gradient(165deg,#D9CBB0,#C2B190 55%,#A9966F)"></div><div class="pleats"></div><div class="buti"></div><div class="sheen"></div><div class="border" style="background:linear-gradient(180deg,#8A6B3A,#6E5126)"></div></div>
+        <span class="cap">The Everyday Ivories</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="zari"></div>
+
+  <!-- Journey timeline (alternating curved / zig-zag) -->
+  <section>
+    <div style="text-align:center;max-width:680px;margin:0 auto 3.2rem">
+      <p class="eyebrow">Our journey</p>
+      <h2>Drape by drape, <em>year</em> by year</h2>
+      <p class="lede" style="margin-left:auto;margin-right:auto">Every milestone began with a weaver saying yes to us — and a patron saying yes to them.</p>
+      <div style="margin-top:2rem"><a class="btn dark" href="craft.html">Discover the Craft →</a></div>
+    </div>
+
+    <div class="sr-journey">
+      <div class="sr-spine" aria-hidden="true"></div>
+      <div class="sr-point sr-left">
+        <div class="sr-node" aria-hidden="true"></div>
+        <div class="sr-card"><span class="sr-year">The Beginning</span><h3>A handful of trunk-shows</h3><p>It started in a living room in Mayur Colony — a few Paithanis, a few friends, and the conviction that handwoven deserved better than a dusty shelf.</p></div>
+      </div>
+      <div class="sr-point sr-right">
+        <div class="sr-node" aria-hidden="true"></div>
+        <div class="sr-card"><span class="sr-year">Going to the Source</span><h3>Walking into the loom clusters</h3><p>We stopped buying from agents and started travelling to Yeola, Paithan, Kanchipuram and Varanasi — choosing each weave at the loom that made it.</p></div>
+      </div>
+      <div class="sr-point sr-left">
+        <div class="sr-node" aria-hidden="true"></div>
+        <div class="sr-card"><span class="sr-year">The Atelier</span><h3>A home on the 5th floor</h3><p>Our Pune boutique opened its doors — a calm, unhurried space where patrons could drape, study the zari, and take their time.</p></div>
+      </div>
+      <div class="sr-point sr-right">
+        <div class="sr-node" aria-hidden="true"></div>
+        <div class="sr-card"><span class="sr-year">Today</span><h3>A growing family of patrons</h3><p>From bridal trousseaus to everyday elegance, Alankrita now dresses women across Maharashtra and beyond — each saree still chosen by hand.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing quote -->
+  <section style="background:var(--ivory-soft)">
+    <div class="story-quote">
+      <span class="mark">“</span>
+      <p>When you wear a handwoven saree, you don't just wear a garment — you wear someone's patience, someone's prayer, and a thousand years of memory.</p>
+      <p style="font-family:var(--body);font-style:normal;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-top:1.8rem">— The House of Alankrita</p>
+      <div style="margin-top:2.6rem"><a class="btn dark" href="collection.html">Explore the Collection</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-logo">Alankrita</div>
+      <p style="font-family:var(--serif);font-style:italic;max-width:32ch">Handwoven sarees, curated with love in Pune — from the loom, for the legacy.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="index.html">Home</a>
+      <a href="collection.html">Collection</a>
+      <a href="story.html">Our Story</a>
+      <a href="craft.html">The Craft</a>
+    </div>
+    <div>
+      <h4>Visit</h4>
+      <a href="appointment.html">Book Appointment</a>
+      <a href="contact.html">Contact</a>
+      <a href="https://www.instagram.com/alankritasaree?igsh=ejkxY3gwem9jM3Mz" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/918412845177" target="_blank" rel="noopener">WhatsApp · +91 84128 45177</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Alankrita Saree, Pune. All rights reserved.</span>
+    <span>4, Mayur Colony, Desai Bandhu Ambewale Building, 5th Floor</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/918412845177?text=Hello%20Alankrita%20Saree!" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-2.9-1.3-4.8-4.2-5-4.4-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.8.8 1.9.1.1.1.3 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l.8-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg>
+</a>
+
+<script src="script.js"></script>
+
+<!-- Fallback only: runs ONLY on browsers without CSS scroll-timeline -->
+<script>
+(function(){
+  function supportsScrollTL(){
+    try{ if(window.CSS && CSS.supports){ if(CSS.supports('animation-timeline','view()')) return true; if(CSS.supports('(animation-timeline: view())')) return true; } }catch(e){}
+    return false;
+  }
+  if(supportsScrollTL()) return;               // modern browser → CSS handles the reveal
+  if(!('IntersectionObserver' in window)) return;
+
+  var blocks = [];
+  function add(el){ if(el && blocks.indexOf(el)===-1) blocks.push(el); }
+  add(document.querySelector('.page-head'));
+  document.querySelectorAll('#page-story > section').forEach(add);
+  document.querySelectorAll('.sr-point').forEach(add);
+  if(!blocks.length) return;
+
+  try{
+    blocks.forEach(function(el){ el.setAttribute('data-reveal',''); });
+    document.documentElement.classList.add('srjs');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('reveal-in'); io.unobserve(e.target);} });
+    }, { threshold:0.1, rootMargin:'0px 0px -8% 0px' });
+    blocks.forEach(function(el){ io.observe(el); });
+  }catch(err){ document.documentElement.classList.remove('srjs'); }
+})();
+</script>
+</body>
+</html>

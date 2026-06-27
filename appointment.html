@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.className='js';</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#2C3124">
+<title>Book an Appointment — Alankrita Saree</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="">
+
+<nav id="nav">
+  <a class="logo" href="index.html">Alankrita<span>saree · pune</span></a>
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="collection.html">Collection</a></li>
+    <li><a href="story.html">Our Story</a></li>
+    <li><a href="craft.html">The Craft</a></li>
+    <li><a href="appointment.html" class="active">Book Appointment</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="socials.html">Our Socials</a></li>
+  </ul>
+</nav>
+
+<main class="page active" id="page-appointment">
+<div class="page-head">
+    <p class="eyebrow reveal">Private Viewing</p>
+    <h2 class="reveal d1">Book your <em>atelier</em> appointment</h2>
+    <p class="lede reveal d2">Choose a date and time below — your request is sent to us directly on WhatsApp, and we'll confirm personally.</p>
+  </div>
+  <section style="padding-top:1rem">
+    <div class="appt-wrap">
+      <div class="calendar reveal" aria-label="Appointment calendar">
+        <div class="cal-head">
+          <button class="cal-nav" id="calPrev" aria-label="Previous month">‹</button>
+          <h3 id="calTitle">June 2026</h3>
+          <button class="cal-nav" id="calNext" aria-label="Next month">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="slots">
+          <p class="slots-label">Choose a time</p>
+          <div class="slot-grid" id="slotGrid"></div>
+        </div>
+      </div>
+      <div class="appt-info reveal d1">
+        <h2 style="font-size:clamp(1.8rem,3vw,2.6rem)">Visit the <em>atelier</em></h2>
+        <p style="color:#54523f">4, Mayur Colony, Desai Bandhu Ambewale Building, 5th Floor, Pune. We host one patron (and her companions) at a time, so every drape gets the attention it deserves.</p>
+        <div class="appt-field">
+          <label for="apptName">Your name</label>
+          <input type="text" id="apptName" placeholder="e.g. Aishwarya Kulkarni" autocomplete="name">
+        </div>
+        <div class="appt-summary" id="apptSummary">Select a date and time on the calendar to begin.</div>
+        <a class="btn solid appt-confirm" id="apptConfirm" disabled>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-2.9-1.3-4.8-4.2-5-4.4-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.8.8 1.9.1.1.1.3 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l.8-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg>
+          Send Request on WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-logo">Alankrita</div>
+      <p style="font-family:var(--serif);font-style:italic;max-width:32ch">Handwoven sarees, curated with love in Pune — from the loom, for the legacy.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <a href="index.html">Home</a>
+      <a href="collection.html">Collection</a>
+      <a href="story.html">Our Story</a>
+      <a href="craft.html">The Craft</a>
+    </div>
+    <div>
+      <h4>Visit</h4>
+      <a href="appointment.html">Book Appointment</a>
+      <a href="contact.html">Contact</a>
+      <a href="https://www.instagram.com/alankritasaree?igsh=ejkxY3gwem9jM3Mz" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/918412845177" target="_blank" rel="noopener">WhatsApp · +91 84128 45177</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 Alankrita Saree, Pune. All rights reserved.</span>
+    <span>4, Mayur Colony, Desai Bandhu Ambewale Building, 5th Floor</span>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/918412845177?text=Hello%20Alankrita%20Saree!" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-2.9-1.3-4.8-4.2-5-4.4-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.8.8 1.9.1.1.1.3 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l.8-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.1 1.2z"/></svg>
+</a>
+
+<script src="script.js"></script>
+</body>
+</html>
