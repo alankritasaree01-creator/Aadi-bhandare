@@ -26,10 +26,11 @@ function updateNavState(){
 /* ---------- Reduced motion ---------- */
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ---------- Reveal animations (fail-safe) ---------- */
-const revealObserver = new IntersectionObserver(entries => {
+/* ---------- Reveal animations (scroll-triggered, mobile-friendly) ---------- */
+const supportsIO = 'IntersectionObserver' in window;
+const revealObserver = supportsIO ? new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); } });
-}, { threshold: 0.01, rootMargin: '0px 0px -8% 0px' });
+}, { threshold: 0.01, rootMargin: '0px 0px -10% 0px' }) : null;
 
 function splitLines(){
   document.querySelectorAll('.line-reveal:not([data-split])').forEach(el => {
@@ -43,13 +44,41 @@ function observeReveals(){
   const vh = window.innerHeight || 800;
   document.querySelectorAll('.reveal:not(.in), .line-reveal:not(.in)').forEach(el => {
     const r = el.getBoundingClientRect();
-    if (r.top < vh * 0.92) el.classList.add('in');
-    else revealObserver.observe(el);
+    // reveal what's already on screen now; everything else animates in as it's scrolled to
+    if (r.top < vh * 0.9 && r.bottom > 0) el.classList.add('in');
+    else if (revealObserver) revealObserver.observe(el);
+    else el.classList.add('in'); // very old browser without IntersectionObserver: just show it
   });
-  clearTimeout(window.__rf);
-  window.__rf = setTimeout(() => {
-    document.querySelectorAll('.reveal:not(.in), .line-reveal:not(.in)').forEach(el => el.classList.add('in'));
-  }, 1600);
+}
+
+/* ---------- Particle "formation" dust on section reveal ---------- */
+function spawnDust(host){
+  if (reduceMotion || host.dataset.dusted) return;
+  host.dataset.dusted = '1';
+  const layer = document.createElement('div');
+  layer.className = 'rv-dust';
+  const n = window.innerWidth < 760 ? 16 : 26;
+  for (let i = 0; i < n; i++){
+    const p = document.createElement('i');
+    p.style.left = (Math.random() * 100).toFixed(2) + '%';
+    p.style.top = (Math.random() * 100).toFixed(2) + '%';
+    p.style.setProperty('--dx', ((Math.random() * 2 - 1) * 46).toFixed(1) + 'px');
+    p.style.setProperty('--dy', ((Math.random() * 2 - 1) * 46).toFixed(1) + 'px');
+    p.style.animationDelay = (Math.random() * 0.3).toFixed(2) + 's';
+    layer.appendChild(p);
+  }
+  host.appendChild(layer);
+  setTimeout(() => layer.remove(), 2100);
+}
+const dustObserver = supportsIO ? new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { spawnDust(e.target); dustObserver.unobserve(e.target); } });
+}, { threshold: 0.18 }) : null;
+function initDust(){
+  if (!dustObserver) return;
+  document.querySelectorAll('main section:not([data-dust-watch])').forEach(s => {
+    s.setAttribute('data-dust-watch', '');
+    dustObserver.observe(s);
+  });
 }
 
 /* ---------- Zoom-in parallax ---------- */
@@ -308,5 +337,6 @@ if (calGrid) {
 
 /* ---------- Init ---------- */
 observeReveals();
+initDust();
 updateParallax();
 updateNavState();
