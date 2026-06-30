@@ -199,33 +199,9 @@
   const silk=(b1,b2,b3,d1,d2)=>({body:`linear-gradient(165deg,${b1},${b2} 55%,${b3})`,border:`linear-gradient(180deg,${d1},${d2})`});
 
   const sarees=[
-    {name:'Mor Bangdi Paithani',fabric:'Paithani',occasion:'Bridal',priceVal:24500,blurb:'Pure silk · gold zari · Yeola',tag:'Signature',
-     desc:'A regal Yeola Paithani, its pallu crowned with the iconic mor-bangdi (peacock-bangle) motif woven entirely in pure gold zari. A bridal heirloom in every sense.',
-     colors:[{name:'Maroon',hex:'#7C3B3B',...silk('#7C3B3B','#5E2828','#4A1F1F','#C9A05C','#9A7438')},{name:'Royal Blue',hex:'#2E4A5C',...silk('#2E4A5C','#1F3645','#16242F','#D8BC85','#B9914F')},{name:'Emerald',hex:'#2F5D4B',...silk('#2F5D4B','#214636','#163024','#D8BC85','#B9914F')}]},
-    {name:'Neelambari Paithani',fabric:'Paithani',occasion:'Festive',priceVal:28900,blurb:'Peacock-blue silk · double pallu',tag:'Heirloom',
-     desc:'Peacock-blue mulberry silk with a rare double pallu, hand-woven over months. The zari border catches light from every angle — made for festive evenings.',
-     colors:[{name:'Peacock Blue',hex:'#2E4A5C',...silk('#2E4A5C','#1F3645','#16242F','#D8BC85','#B9914F')},{name:'Teal',hex:'#1F6F6B',...silk('#1F6F6B','#155350','#0E3A38','#D8BC85','#B9914F')},{name:'Violet',hex:'#5A4A82',...silk('#5A4A82','#433763','#2F2747','#D8BC85','#B9914F')}]},
-    {name:'Kanjeevaram Kalyani',fabric:'Kanjeevaram',occasion:'Bridal',priceVal:32400,blurb:'Temple border · pure mulberry silk',tag:'Bridal',
-     desc:'A South-Indian temple-border Kanjeevaram in rich plum, woven from pure mulberry silk with a contrast korvai border. The quintessential South Indian bridal drape.',
-     colors:[{name:'Plum',hex:'#8A3A55',...silk('#8A3A55','#6B2740','#4E1B2E','#C9A05C','#A87E3F')},{name:'Kunku Red',hex:'#9C2F2F',...silk('#9C2F2F','#7A1F1F','#5C1616','#D8BC85','#B9914F')},{name:'Mustard',hex:'#B8902E',...silk('#B8902E','#977322','#6E5318','#3E2F12','#2A2010')}]},
-    {name:'Banarasi Shahmina',fabric:'Banarasi',occasion:'Festive',priceVal:18750,blurb:'Katan silk · sona-rupa zari',tag:'Festive',
-     desc:'Olive-green Katan silk from Varanasi, brocaded with sona-rupa (gold-silver) zari jaal. Light enough to drape all evening, opulent enough for any celebration.',
-     colors:[{name:'Olive',hex:'#5A6147',...silk('#5A6147','#434A33','#343A27','#D8BC85','#B9914F')},{name:'Wine',hex:'#6E2A3A',...silk('#6E2A3A','#54202C','#3C1620','#D8BC85','#B9914F')},{name:'Ink Blue',hex:'#27364F',...silk('#27364F','#1C283B','#121A29','#D8BC85','#B9914F')}]},
-    {name:'Chanderi Chandrika',fabric:'Chanderi',occasion:'Everyday',priceVal:9200,blurb:'Silk-cotton · sheer drape',tag:'Everyday Luxe',
-     desc:'A whisper-light Chanderi silk-cotton in warm ivory, with a fine sheer body and delicate zari buti. Effortless luxury for daytime gatherings and quiet Sundays.',
-     colors:[{name:'Ivory',hex:'#D9CBB0',...silk('#D9CBB0','#C2B190','#A9966F','#8A6B3A','#6E5126')},{name:'Rose',hex:'#D5A6A0',...silk('#D5A6A0','#BE8B85','#A06F69','#8A6B3A','#6E5126')},{name:'Mint',hex:'#A9C2AE',...silk('#A9C2AE','#90AA96','#74907B','#8A6B3A','#6E5126')}]},
-    {name:'Tussar Vanya',fabric:'Tussar',occasion:'Everyday',priceVal:11800,blurb:'Wild tussar silk · earthy gold',tag:'Earthy',
-     desc:'Wild tussar silk with its natural golden slub texture and an earthy hand-block border. Grounded, organic, and quietly elegant for everyday wear.',
-     colors:[{name:'Honey',hex:'#A87E4B',...silk('#A87E4B','#8C6437','#6E4C26','#4A3A1E','#352A14')},{name:'Rust',hex:'#9A4E2E',...silk('#9A4E2E','#7C3D22','#5C2C18','#3E2614','#2A1A0E')},{name:'Moss',hex:'#6B6B3A',...silk('#6B6B3A','#52522C','#3A3A1E','#2C2410','#1E180A')}]},
-    {name:'Organza Megha',fabric:'Organza',occasion:'Festive',priceVal:13500,blurb:'Featherlight organza · pastel sheen',tag:'Soirée',
-     desc:'Featherlight organza in a misty lilac, with a soft pearlescent sheen and zari-edged pallu. The drape of choice for cocktail soirées and receptions.',
-     colors:[{name:'Lilac',hex:'#B7A6B8',...silk('#B7A6B8','#988199','#7B6680','#D8BC85','#B9914F')},{name:'Sky',hex:'#A6BBC8',...silk('#A6BBC8','#869FB0','#6C8696','#D8BC85','#B9914F')},{name:'Blush',hex:'#D2A9B0',...silk('#D2A9B0','#B98D95','#9E727B','#D8BC85','#B9914F')}]},
-    {name:'Irkali Indrayani',fabric:'Cotton',occasion:'Everyday',priceVal:7900,blurb:'Khun border · Deccan weave',tag:'Classic',
-     desc:'A classic Deccan handloom in deep forest green with a traditional Khun border. Breathable, durable, and timeless — a true everyday Maharashtrian weave.',
-     colors:[{name:'Forest',hex:'#3E5A4F',...silk('#3E5A4F','#2C453B','#1F332B','#C9A05C','#9A7438')},{name:'Indigo',hex:'#34466B',...silk('#34466B','#283651','#1B2539','#C9A05C','#9A7438')},{name:'Brick',hex:'#9A4733',...silk('#9A4733','#7A3627','#5A271C','#C9A05C','#9A7438')}]},
-    {name:'Raktima Paithani',fabric:'Paithani',occasion:'Bridal',priceVal:26300,blurb:'Kunku-red silk · parrot motifs',tag:'Wedding',
-     desc:'Kunku-red pure silk Paithani scattered with woven popat (parrot) motifs and a gleaming gold pallu. The auspicious bridal red, reimagined as an heirloom.',
-     colors:[{name:'Kunku Red',hex:'#9C2F2F',...silk('#9C2F2F','#7A1F1F','#5C1616','#D8BC85','#B9914F')},{name:'Magenta',hex:'#8E2E5C',...silk('#8E2E5C','#6E2347','#501934','#D8BC85','#B9914F')},{name:'Saffron',hex:'#C8762E',...silk('#C8762E','#A35E22','#7A4618','#3E2F12','#2A2010')}]}
+    {name:'Celestial Bloom',fabric:'Banarasi',occasion:'Bridal',priceVal:20000,blurb:'Pure Katan silk · golden zari jal',tag:'Signature',
+     desc:'Woven in luxurious pure Katan silk, Celestial Bloom is an ode to understated elegance and timeless craftsmanship. The serene sky-blue hue is beautifully complemented by intricate golden zari work, featuring an all-over jal pattern adorned with delicate floral motifs. Designed in a sophisticated single-tone palette and paired with a matching self blouse in sky blue, it is ideal for weddings, festive occasions, and special celebrations.',
+     colors:[{name:'Sky Blue',hex:'#8CB6CE',...silk('#9BC0D6','#7FA8C2','#6690AD','#D8BC85','#B9914F')}]},
   ];
 
   const rupee=n=>'₹'+n.toLocaleString('en-IN');
